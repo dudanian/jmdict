@@ -2,6 +2,7 @@
 package jmdict
 
 import (
+	"compress/gzip"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -67,4 +68,17 @@ func Download() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func NewFileReader() (*os.File, error) {
+	return os.Open(jmdictPath)
+}
+
+func NewGzipReader() (*gzip.Reader, error) {
+	fi, err := NewFileReader()
+	if err != nil {
+		return nil, err
+	}
+
+	return gzip.NewReader(fi)
 }
